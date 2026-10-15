@@ -1,0 +1,16 @@
+{% extends 'todos/base.html' %}
+{% block content %}
+<p><a class="button" href="{% url 'todos:create' %}">+ 할 일 등록</a></p>
+{% for todo in todos %}
+<article class="card {% if todo.is_completed %}completed{% endif %}">
+<h2>{{ todo.title }}</h2><p class="content">{{ todo.content }}</p>
+<p><small>{{ todo.created_at|date:'Y-m-d H:i' }}</small></p>
+<div class="actions">
+<form method="post" action="{% url 'todos:toggle' todo.pk %}">{% csrf_token %}
+<label><input type="checkbox" {% if todo.is_completed %}checked{% endif %} onchange="this.form.submit()"> 완료</label>
+<noscript><button type="submit">완료 상태 전환</button></noscript></form>
+<a href="{% url 'todos:update' todo.pk %}">수정</a>
+<form method="post" action="{% url 'todos:delete' todo.pk %}" onsubmit="return confirm('삭제하시겠습니까?')">{% csrf_token %}<button class="danger" type="submit">삭제</button></form>
+</div></article>
+{% empty %}<div class="card">등록된 할 일이 없습니다. 첫 할 일을 등록해 보세요.</div>{% endfor %}
+{% endblock %}

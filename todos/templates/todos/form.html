@@ -1,0 +1,6 @@
+{% extends 'todos/base.html' %}
+{% block content %}<section class="card"><h2>{{ heading }}</h2>
+<form method="post" novalidate>{% csrf_token %}{{ form.non_field_errors }}
+{% for field in form %}<p>{{ field.label_tag }}{{ field }}{{ field.errors }}</p>{% endfor %}
+<button type="submit">저장</button> <a href="{% url 'todos:list' %}">취소</a>
+</form></section>{% endblock %}
